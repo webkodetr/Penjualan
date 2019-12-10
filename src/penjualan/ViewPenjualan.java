@@ -5,6 +5,7 @@
  */
 package penjualan;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -50,19 +51,27 @@ public class ViewPenjualan extends javax.swing.JFrame {
         clear();
     }
 
-    private void getData(){
+    private void getData() {
         int select = tbl_supplier.getSelectedRowCount();
-        System.out.println(select);
-        
-        int baris = tbl_supplier.getSelectedRow();
-        tfId.setText(tbl_supplier.getValueAt(baris, 0).toString());
-        tfNama.setText(tbl_supplier.getValueAt(baris, 1).toString());
-        tfQty.setText(tbl_supplier.getValueAt(baris, 2).toString());
-        tfHarga.setText(tbl_supplier.getValueAt(baris, 3).toString());
+        if (select > 0) {
+            int pilih = JOptionPane.YES_NO_OPTION;
+            pilih = JOptionPane.showConfirmDialog(rootPane, "Yakin ingin ubah!",
+                    "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (pilih == JOptionPane.YES_OPTION) {
 
-        
+                int baris = tbl_supplier.getSelectedRow();
+                tfId.setText(tbl_supplier.getValueAt(baris, 0).toString());
+                tfNama.setText(tbl_supplier.getValueAt(baris, 1).toString());
+                tfQty.setText(tbl_supplier.getValueAt(baris, 2).toString());
+                tfHarga.setText(tbl_supplier.getValueAt(baris, 3).toString());
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Data belum di pilih");
+        }
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
