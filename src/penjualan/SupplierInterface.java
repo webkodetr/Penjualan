@@ -8,5 +8,8 @@ public interface SupplierInterface {
     
     public void create(Supplier sup);
     
+    public void update(Supplier sup);
+    
+    public void delete(int id);
     
 }

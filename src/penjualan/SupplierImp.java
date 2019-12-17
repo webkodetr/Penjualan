@@ -38,8 +38,30 @@ public class SupplierImp implements SupplierInterface {
 
     @Override
     public void create(Supplier sup) {
-       list.add(sup);
-       JOptionPane.showMessageDialog(null, "Berhasil disimpan");
+        list.add(sup);
+        JOptionPane.showMessageDialog(null, "Berhasil disimpan!");
+    }
+
+    @Override
+    public void update(Supplier sup) {
+        for (int i = 0; i < list.size(); i++) {
+            if (sup.getId() == list.get(i).getId()) {
+                list.set(i, sup);
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Berhasil diubah!");
+    }
+
+    @Override
+    public void delete(int id) {
+        for (int i = 0; i < list.size(); i++) {
+            if (id == list.get(i).getId()) {
+                list.remove(i);
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Berhasil dihapus!");
     }
 
 }

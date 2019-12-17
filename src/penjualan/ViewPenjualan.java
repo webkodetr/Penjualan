@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 public class ViewPenjualan extends javax.swing.JFrame {
 
     private SupplierInterface si;
+    private boolean TAG = true; // simpan
 
     public ViewPenjualan() {
         initComponents();
@@ -24,11 +25,38 @@ public class ViewPenjualan extends javax.swing.JFrame {
     }
 
     private void clear() {
+        TAG = true;
         tfId.setText("");
+        tfId.setEnabled(true);
         tfNama.setText("");
         tfHarga.setText("");
         tfQty.setText("");
         read();
+    }
+
+    private boolean validasiInput() {
+        if (tfId.getText().isEmpty()
+                || tfNama.getText().isEmpty()
+                || tfQty.getText().isEmpty()
+                || tfHarga.getText().isEmpty()) {
+
+            return false;
+        }
+        return true;
+    }
+
+    private void save() {
+        if (validasiInput()) {
+            if (TAG) { // TAG == true
+                create(); // simpan data
+            } else { // TAG == false
+                update(); // ubah data
+            }
+
+            clear();
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Inputan masih kosong!");
+        }
     }
 
     private void read() {
@@ -48,7 +76,21 @@ public class ViewPenjualan extends javax.swing.JFrame {
         sup.setTotal_harga(total_harga);
 
         si.create(sup);
-        clear();
+    }
+
+    private void update() {
+        Supplier sup = new Supplier();
+        sup.setId(Integer.valueOf(tfId.getText()));
+        sup.setNama(tfNama.getText());
+        sup.setQty(Integer.valueOf(tfQty.getText()));
+        sup.setHarga(Integer.valueOf(tfHarga.getText()));
+
+        int total_harga = Integer.valueOf(tfQty.getText())
+                * Integer.valueOf(tfHarga.getText());
+
+        sup.setTotal_harga(total_harga);
+
+        si.update(sup);
     }
 
     private void getData() {
@@ -58,18 +100,41 @@ public class ViewPenjualan extends javax.swing.JFrame {
             pilih = JOptionPane.showConfirmDialog(rootPane, "Yakin ingin ubah!",
                     "Konfirmasi", JOptionPane.YES_NO_OPTION);
             if (pilih == JOptionPane.YES_OPTION) {
-
+                TAG = false;
                 int baris = tbl_supplier.getSelectedRow();
                 tfId.setText(tbl_supplier.getValueAt(baris, 0).toString());
                 tfNama.setText(tbl_supplier.getValueAt(baris, 1).toString());
                 tfQty.setText(tbl_supplier.getValueAt(baris, 2).toString());
                 tfHarga.setText(tbl_supplier.getValueAt(baris, 3).toString());
+           
+                tfId.setEnabled(false);
             }
 
         } else {
             JOptionPane.showMessageDialog(rootPane, "Data belum di pilih");
         }
 
+    }
+    
+    private void delete(){
+         int select = tbl_supplier.getSelectedRowCount();
+        if (select > 0) {
+            int pilih = JOptionPane.YES_NO_OPTION;
+            pilih = JOptionPane.showConfirmDialog(rootPane, "Yakin ingin dihapus!",
+                    "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (pilih == JOptionPane.YES_OPTION) {
+
+                int baris = tbl_supplier.getSelectedRow();
+                int id = Integer.valueOf(tbl_supplier.getValueAt(baris, 0).toString());
+                
+                si.delete(id);
+                
+                clear();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Data belum di pilih");
+        }
     }
 
     /**
@@ -165,6 +230,11 @@ public class ViewPenjualan extends javax.swing.JFrame {
         });
 
         jButton3.setText("Hapus");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -247,13 +317,18 @@ public class ViewPenjualan extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        create();
+        save();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         getData();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
