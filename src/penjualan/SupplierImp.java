@@ -64,4 +64,20 @@ public class SupplierImp implements SupplierInterface {
         JOptionPane.showMessageDialog(null, "Berhasil dihapus!");
     }
 
+    @Override
+    public void search(JTable jt, String nama) {
+        DefaultTableModel dtm = new DefaultTableModel(null, kolom);
+        for (int i = 0; i < list.size(); i++) {
+            if (nama.equalsIgnoreCase(list.get(i).getNama())) {
+                Object[] oj = new Object[5];
+                oj[0] = list.get(i).getId();
+                oj[1] = list.get(i).getNama();
+                oj[2] = list.get(i).getQty();
+                oj[3] = list.get(i).getHarga();
+                oj[4] = list.get(i).getTotal_harga();
+                dtm.addRow(oj);
+            }
+        }
+        jt.setModel(dtm);
+    }
 }

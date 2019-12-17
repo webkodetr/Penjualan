@@ -106,7 +106,7 @@ public class ViewPenjualan extends javax.swing.JFrame {
                 tfNama.setText(tbl_supplier.getValueAt(baris, 1).toString());
                 tfQty.setText(tbl_supplier.getValueAt(baris, 2).toString());
                 tfHarga.setText(tbl_supplier.getValueAt(baris, 3).toString());
-           
+
                 tfId.setEnabled(false);
             }
 
@@ -115,9 +115,9 @@ public class ViewPenjualan extends javax.swing.JFrame {
         }
 
     }
-    
-    private void delete(){
-         int select = tbl_supplier.getSelectedRowCount();
+
+    private void delete() {
+        int select = tbl_supplier.getSelectedRowCount();
         if (select > 0) {
             int pilih = JOptionPane.YES_NO_OPTION;
             pilih = JOptionPane.showConfirmDialog(rootPane, "Yakin ingin dihapus!",
@@ -126,14 +126,22 @@ public class ViewPenjualan extends javax.swing.JFrame {
 
                 int baris = tbl_supplier.getSelectedRow();
                 int id = Integer.valueOf(tbl_supplier.getValueAt(baris, 0).toString());
-                
+
                 si.delete(id);
-                
+
                 clear();
             }
 
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Data belum di pilih");
+            JOptionPane.showMessageDialog(rootPane, "Data belum di pilih!");
+        }
+    }
+
+    private void search() {
+        if (tfPencarian.getText().isEmpty()) {
+            clear();
+        } else {
+            si.search(tbl_supplier, tfPencarian.getText());
         }
     }
 
@@ -221,6 +229,12 @@ public class ViewPenjualan extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tbl_supplier);
 
         jLabel6.setText("Pencarian");
+
+        tfPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfPencarianKeyReleased(evt);
+            }
+        });
 
         jButton2.setText("Ubah");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -329,6 +343,11 @@ public class ViewPenjualan extends javax.swing.JFrame {
         // TODO add your handling code here:
         delete();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void tfPencarianKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPencarianKeyReleased
+        // TODO add your handling code here:
+        search();
+    }//GEN-LAST:event_tfPencarianKeyReleased
 
     /**
      * @param args the command line arguments

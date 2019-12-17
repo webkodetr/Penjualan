@@ -12,4 +12,6 @@ public interface SupplierInterface {
     
     public void delete(int id);
     
+    public void search(JTable jt, String nama);
+    
 }
